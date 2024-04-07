@@ -8,13 +8,14 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:8.+'
+        classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:10.+'
     }
 }
 
 plugins {
     id 'com.netflix.nebula.netflixoss' version '11.1.1'
     id 'org.gretty' version '4.0.3'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 idea {
@@ -55,10 +56,12 @@ allprojects {
     }
 }
 
-subprojects {
+subprojects { subproject ->
     apply plugin: 'com.netflix.nebula.netflixoss'
     apply plugin: 'java'
-
+    if (!subproject.name.contains("eureka-examples") && !subproject.name.contains("eureka-tests")) {
+        apply plugin: 'com.github.johnrengelman.shadow'
+    }
     group = "com.netflix.${githubProjectName}"
 
     sourceCompatibility = 1.8

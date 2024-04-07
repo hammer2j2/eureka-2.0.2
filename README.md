@@ -26,5 +26,9 @@ Documentation
 Please see [wiki](https://github.com/Netflix/eureka/wiki) for detailed documentation.
 
 
+Made for eureka.version: 2.0.2 only using JDK11
 
-Made for eureka.version: 2.0.2 only
+Use the play button to build docker container.
+
+## Developing locally?
+### In order to develop locally you need to run the Dockerfile and include the built JAR's in your Spring project.

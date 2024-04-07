@@ -44,3 +44,7 @@ dependencies {
     testImplementation "jakarta.servlet:jakarta.servlet-api:5.0.0"
     testRuntimeOnly 'org.slf4j:slf4j-simple:2.0.0-beta1'
 }
+
+build {
+    dependsOn shadowJar
+}

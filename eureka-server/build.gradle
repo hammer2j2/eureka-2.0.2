@@ -31,3 +31,7 @@ war {
 
 // Integration test loads eureka war, so it must be ready prior to running tests
 test.dependsOn war
+
+build {
+    dependsOn shadowJar
+}
