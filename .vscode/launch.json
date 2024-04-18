@@ -5,7 +5,7 @@
             "type": "java",
             "request": "launch",
             "name": "Docker: Attach to Java",
-            "preLaunchTask": "docker-compose-dev-down-build_jars",
+            "preLaunchTask": "docker-compose-dev-down-deploy",
         }
     ]
 }

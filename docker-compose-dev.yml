@@ -1,9 +1,10 @@
 version: '3.8'
 
 services:
-  build_jars:
+  deploy:
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
       - .:/app
+      - ~/.m2:/root/.m2

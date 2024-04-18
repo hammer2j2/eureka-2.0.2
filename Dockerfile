@@ -5,5 +5,7 @@ WORKDIR /app
 
 COPY . .
 
+RUN ./gradlew --info --stacktrace build
+
 # Build jars
-CMD ["./gradlew", "build"]
+CMD ["./gradlew", "publishToMavenLocal"]

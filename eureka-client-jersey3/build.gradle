@@ -39,7 +39,3 @@ dependencies {
     testImplementation "junit:junit:${junit_version}"
     testImplementation "org.mockito:mockito-core:${mockitoVersion}"
 }
-
-build {
-    dependsOn shadowJar
-}

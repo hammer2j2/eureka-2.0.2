@@ -1,3 +1,9 @@
+./gradlew --info --stacktrace -Prelease.useLastTag=true candidate
+
+
+
+## Below is the original docs
+
 Eureka
 ======
 [![build](https://github.com/Netflix/eureka/actions/workflows/nebula-snapshot.yml/badge.svg)](https://github.com/Netflix/eureka/actions/workflows/nebula-snapshot.yml)
@@ -5,7 +11,7 @@ Eureka
 Eureka is a RESTful (Representational State Transfer) service that is primarily used in the AWS cloud for the purpose of
 discovery, load balancing and failover of middle-tier servers. It plays a critical role in Netflix mid-tier infra.
 
-Building - (Ignore this, use java 11)
+Building
 --------
 The build requires `java8` because of some required libraries that are `java8` (`servo`), but the source and target
 compatibility are still set to `1.7`. Note that tags should be checked out to perform a build.
@@ -24,11 +30,3 @@ periodically. Issues with the most minimal repro possible have the highest chanc
 Documentation
 --------------
 Please see [wiki](https://github.com/Netflix/eureka/wiki) for detailed documentation.
-
-
-Made for eureka.version: 2.0.2 only using JDK11
-
-Use the play button to build docker container.
-
-## Developing locally?
-### In order to develop locally you need to run the Dockerfile and include the built JAR's in your Spring project.

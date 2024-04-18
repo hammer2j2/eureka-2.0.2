@@ -22,7 +22,3 @@ dependencies {
     testImplementation "org.mockito:mockito-core:${mockitoVersion}"
     testImplementation "org.mock-server:mockserver-netty:${mockserverVersion}"
 }
-
-build {
-    dependsOn shadowJar
-}
