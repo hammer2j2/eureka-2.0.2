@@ -30,3 +30,12 @@ periodically. Issues with the most minimal repro possible have the highest chanc
 Documentation
 --------------
 Please see [wiki](https://github.com/Netflix/eureka/wiki) for detailed documentation.
+
+
+## Custom
+
+### Requirements
+
+* Install maven on your local computer
+* Make sure that you have maven .m2 repsitory folder
+* Run the docker image
