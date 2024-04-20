@@ -1,9 +1,3 @@
-./gradlew --info --stacktrace -Prelease.useLastTag=true candidate
-
-
-
-## Below is the original docs
-
 Eureka
 ======
 [![build](https://github.com/Netflix/eureka/actions/workflows/nebula-snapshot.yml/badge.svg)](https://github.com/Netflix/eureka/actions/workflows/nebula-snapshot.yml)
@@ -13,7 +7,7 @@ discovery, load balancing and failover of middle-tier servers. It plays a critic
 
 Building
 --------
-The build requires `java8` because of some required libraries that are `java8` (`servo`), but the source and target
+The build requires `java11` because of some required libraries that are `java8` (`servo`), but the source and target
 compatibility are still set to `1.7`. Note that tags should be checked out to perform a build.
 
 Contributing

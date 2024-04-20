@@ -4,8 +4,11 @@ FROM openjdk:11
 WORKDIR /app
 
 COPY . .
+# must stay 0.0.1-SNAPSHOT
+RUN ./gradlew --info --stacktrace build -Prelease.version=0.0.1-SNAPSHOT
 
-RUN ./gradlew --info --stacktrace build
+# builds snapshot 0.0.1-SNAPSHOT
+# CMD ["./gradlew", "publishToMavenLocal"]
 
-# Build jars
-CMD ["./gradlew", "publishToMavenLocal"]
+# builds snapshot 2.0.2 prod for spring cloud netflix
+CMD ["./gradlew", "publishNebulaPublicationToMavenLocal"]

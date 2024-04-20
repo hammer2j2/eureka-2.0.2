@@ -63,7 +63,6 @@ subprojects {
     apply plugin: 'java'
 
     group = "com.netflix.${githubProjectName}"
-
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
