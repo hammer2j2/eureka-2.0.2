@@ -72,3 +72,6 @@ atlassian-ide-plugin.xml
 
 # publishing secrets
 secrets/signing-key
+
+# Ignore all JAR files except the Gradle wrapper JAR file
+!gradle/wrapper/gradle-wrapper.jar

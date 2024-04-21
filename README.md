@@ -26,10 +26,10 @@ Documentation
 Please see [wiki](https://github.com/Netflix/eureka/wiki) for detailed documentation.
 
 
-## Custom
+## Custom Development
 
-### Requirements
+#### Requirements
 
 * Install maven on your local computer
 * Make sure that you have maven .m2 repsitory folder
-* Run the docker image
+* Run the play button
