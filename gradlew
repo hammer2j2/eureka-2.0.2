@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# $ remove me
+
 ##############################################################################
 ##
 ##  Gradle start up script for UN*X
