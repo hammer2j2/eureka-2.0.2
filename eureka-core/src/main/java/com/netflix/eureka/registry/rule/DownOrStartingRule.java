@@ -24,7 +24,7 @@ public class DownOrStartingRule implements InstanceStatusOverrideRule {
         // currently in SERVICE
         if ((!InstanceInfo.InstanceStatus.UP.equals(instanceInfo.getStatus()))
                 && (!InstanceInfo.InstanceStatus.OUT_OF_SERVICE.equals(instanceInfo.getStatus()))) {
-            logger.debug("Trusting the instance status {} from replica or instance for instance {}",
+            logger.info("Foobar Trusting the instance status {} from replica or instance for instance {}",
                     instanceInfo.getStatus(), instanceInfo.getId());
             return StatusOverrideResult.matchingStatus(instanceInfo.getStatus());
         }

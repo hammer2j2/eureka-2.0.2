@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY . .
 # must stay 0.0.1-SNAPSHOT
-RUN ./gradlew --info --stacktrace build
+RUN ./gradlew -xtest --info --stacktrace build
 
 # builds snapshot 0.0.1-SNAPSHOT
 # CMD ["./gradlew", "publishToMavenLocal"]

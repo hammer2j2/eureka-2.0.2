@@ -155,7 +155,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                 allKnownRemoteRegions[remoteRegionArrayIndex++] = remoteRegionUrlWithName.getKey();
             }
         }
-        logger.info("Finished initializing remote region registries. All known remote regions: {}",
+        logger.info("Foobar Finished initializing remote region registries. All known remote regions: {}",
                 (Object) allKnownRemoteRegions);
     }
 
@@ -212,14 +212,14 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
             if (existingLease != null && (existingLease.getHolder() != null)) {
                 Long existingLastDirtyTimestamp = existingLease.getHolder().getLastDirtyTimestamp();
                 Long registrationLastDirtyTimestamp = registrant.getLastDirtyTimestamp();
-                logger.debug("Existing lease found (existing={}, provided={}", existingLastDirtyTimestamp, registrationLastDirtyTimestamp);
+                logger.info("Foobar foobar Existing lease found (existing={}, provided={}", existingLastDirtyTimestamp, registrationLastDirtyTimestamp);
 
                 // this is a > instead of a >= because if the timestamps are equal, we still take the remote transmitted
                 // InstanceInfo instead of the server local copy.
                 if (existingLastDirtyTimestamp > registrationLastDirtyTimestamp) {
-                    logger.warn("There is an existing lease and the existing lease's dirty timestamp {} is greater" +
+                    logger.info("Foobar There is an existing lease and the existing lease's dirty timestamp {} is greater" +
                             " than the one that is being registered {}", existingLastDirtyTimestamp, registrationLastDirtyTimestamp);
-                    logger.warn("Using the existing instanceInfo instead of the new instanceInfo as the registrant");
+                    logger.info("Foobar Using the existing instanceInfo instead of the new instanceInfo as the registrant");
                     registrant = existingLease.getHolder();
                 }
             } else {
@@ -231,7 +231,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                         updateRenewsPerMinThreshold();
                     }
                 }
-                logger.debug("No previous lease information found; it is new registration");
+                logger.info("Foobar No previous lease information found; it is new registration");
             }
             Lease<InstanceInfo> lease = new Lease<>(registrant, leaseDuration);
             if (existingLease != null) {
@@ -243,16 +243,16 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                     registrant.getAppName() + "(" + registrant.getId() + ")"));
             // This is where the initial state transfer of overridden status happens
             if (!InstanceStatus.UNKNOWN.equals(registrant.getOverriddenStatus())) {
-                logger.debug("Found overridden status {} for instance {}. Checking to see if needs to be add to the "
+                logger.info("Foobar Found overridden status {} for instance {}. Checking to see if needs to be add to the "
                                 + "overrides", registrant.getOverriddenStatus(), registrant.getId());
                 if (!overriddenInstanceStatusMap.containsKey(registrant.getId())) {
-                    logger.info("Not found overridden id {} and hence adding it", registrant.getId());
+                    logger.info("Foobar Not found overridden id {} and hence adding it", registrant.getId());
                     overriddenInstanceStatusMap.put(registrant.getId(), registrant.getOverriddenStatus());
                 }
             }
             InstanceStatus overriddenStatusFromMap = overriddenInstanceStatusMap.get(registrant.getId());
             if (overriddenStatusFromMap != null) {
-                logger.info("Storing overridden status {} from map", overriddenStatusFromMap);
+                logger.info("Foobar Storing overridden status {} from map", overriddenStatusFromMap);
                 registrant.setOverriddenStatus(overriddenStatusFromMap);
             }
 
@@ -268,7 +268,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
             recentlyChangedQueue.add(new RecentlyChangedItem(lease));
             registrant.setLastUpdatedTimestamp();
             invalidateCache(registrant.getAppName(), registrant.getVIPAddress(), registrant.getSecureVipAddress());
-            logger.info("Registered instance {}/{} with status {} (replication={})",
+            logger.info("Foobar Registered foobar instance {}/{} with status {} (replication={})",
                     registrant.getAppName(), registrant.getId(), registrant.getStatus(), isReplication);
         } finally {
             read.unlock();
@@ -311,11 +311,11 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
             recentCanceledQueue.add(new Pair<Long, String>(System.currentTimeMillis(), appName + "(" + id + ")"));
             InstanceStatus instanceStatus = overriddenInstanceStatusMap.remove(id);
             if (instanceStatus != null) {
-                logger.debug("Removed instance id {} from the overridden map which has value {}", id, instanceStatus.name());
+                logger.info("Foobar Removed instance id {} from the overridden map which has value {}", id, instanceStatus.name());
             }
             if (leaseToCancel == null) {
                 CANCEL_NOT_FOUND.increment(isReplication);
-                logger.warn("DS: Registry: cancel failed because Lease is not registered for: {}/{}", appName, id);
+                logger.info("Foobar DS: Registry: cancel failed because Lease is not registered for: {}/{}", appName, id);
                 return false;
             } else {
                 leaseToCancel.cancel();
@@ -330,7 +330,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                     svip = instanceInfo.getSecureVipAddress();
                 }
                 invalidateCache(appName, vip, svip);
-                logger.info("Cancelled instance {}/{} (replication={})", appName, id, isReplication);
+                logger.info("Foobar Cancelled instance {}/{} (replication={})", appName, id, isReplication);
             }
         } finally {
             read.unlock();
@@ -362,7 +362,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
         }
         if (leaseToRenew == null) {
             RENEW_NOT_FOUND.increment(isReplication);
-            logger.warn("DS: Registry: lease doesn't exist, registering resource: {} - {}", appName, id);
+            logger.info("Foobar DS: Registry: lease doesn't exist, registering resource: {} - {}", appName, id);
             return false;
         } else {
             InstanceInfo instanceInfo = leaseToRenew.getHolder();
@@ -371,7 +371,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                 InstanceStatus overriddenInstanceStatus = this.getOverriddenInstanceStatus(
                         instanceInfo, leaseToRenew, isReplication);
                 if (overriddenInstanceStatus == InstanceStatus.UNKNOWN) {
-                    logger.info("Instance status UNKNOWN possibly due to deleted override for instance {}"
+                    logger.info("Foobar Instance status UNKNOWN possibly due to deleted override for instance {}"
                             + "; re-register required", instanceInfo.getId());
                     RENEW_NOT_FOUND.increment(isReplication);
                     return false;
@@ -440,12 +440,12 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
             // We might not have the overridden status if the server got
             // restarted -this will help us maintain the overridden state
             // from the replica
-            logger.info("Adding overridden status for instance id {} and the value is {}",
+            logger.info("Foobar Adding overridden status for instance id {} and the value is {}",
                     id, overriddenStatus.name());
             overriddenInstanceStatusMap.put(id, overriddenStatus);
             InstanceInfo instanceInfo = this.getInstanceByAppAndId(appName, id, false);
             instanceInfo.setOverriddenStatus(overriddenStatus);
-            logger.info("Set the overridden status for instance (appname:{}, id:{}} and the value is {} ",
+            logger.info("Foobar Set the overridden status for instance (appname:{}, id:{}} and the value is {} ",
                     appName, id, overriddenStatus.name());
         }
     }
@@ -589,10 +589,10 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
     }
 
     public void evict(long additionalLeaseMs) {
-        logger.debug("Running the evict task");
+        logger.info("Foobar Running the evict task");
 
         if (!isLeaseExpirationEnabled()) {
-            logger.debug("DS: lease expiration is currently disabled.");
+            logger.info("Foobar DS: lease expiration is currently disabled.");
             return;
         }
 
@@ -620,7 +620,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
 
         int toEvict = Math.min(expiredLeases.size(), evictionLimit);
         if (toEvict > 0) {
-            logger.info("Evicting {} items (expired={}, evictionLimit={})", toEvict, expiredLeases.size(), evictionLimit);
+            logger.info("Foobar Evicting {} items (expired={}, evictionLimit={})", toEvict, expiredLeases.size(), evictionLimit);
 
             Random random = new Random(System.currentTimeMillis());
             for (int i = 0; i < toEvict; i++) {
@@ -632,7 +632,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                 String appName = lease.getHolder().getAppName();
                 String id = lease.getHolder().getId();
                 EXPIRED.increment();
-                logger.warn("DS: Registry: expired lease for {}/{}", appName, id);
+                logger.info("Foobar DS: Registry: expired lease for {}/{}", appName, id);
                 internalCancel(appName, id, false);
             }
         }
@@ -741,7 +741,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
 
         boolean includeRemoteRegion = null != remoteRegions && remoteRegions.length != 0;
 
-        logger.debug("Fetching applications registry with remote regions: {}, Regions argument {}",
+        logger.info("Foobar Fetching applications registry with remote regions: {}, Regions argument {}",
                 includeRemoteRegion, remoteRegions);
 
         if (includeRemoteRegion) {
@@ -774,7 +774,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                     Applications remoteApps = remoteRegistry.getApplications();
                     for (Application application : remoteApps.getRegisteredApplications()) {
                         if (shouldFetchFromRemoteRegistry(application.getName(), remoteRegion)) {
-                            logger.info("Application {}  fetched from the remote region {}",
+                            logger.info("Foobar Application {}  fetched from the remote region {}",
                                     application.getName(), remoteRegion);
 
                             Application appInstanceTillNow = apps.getRegisteredApplications(application.getName());
@@ -786,13 +786,13 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                                 appInstanceTillNow.addInstance(instanceInfo);
                             }
                         } else {
-                            logger.debug("Application {} not fetched from the remote region {} as there exists a "
+                            logger.info("Foobar Application {} not fetched from the remote region {} as there exists a "
                                             + "whitelist and this app is not in the whitelist.",
                                     application.getName(), remoteRegion);
                         }
                     }
                 } else {
-                    logger.warn("No remote registry available for the remote region {}", remoteRegion);
+                    logger.info("Foobar No remote registry available for the remote region {}", remoteRegion);
                 }
             }
         }
@@ -882,12 +882,12 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
         write.lock();
         try {
             Iterator<RecentlyChangedItem> iter = this.recentlyChangedQueue.iterator();
-            logger.debug("The number of elements in the delta queue is : {}",
+            logger.info("Foobar The number of elements in the delta queue is : {}",
                     this.recentlyChangedQueue.size());
             while (iter.hasNext()) {
                 Lease<InstanceInfo> lease = iter.next().getLeaseInfo();
                 InstanceInfo instanceInfo = lease.getHolder();
-                logger.debug(
+                logger.info(
                         "The instance id {} is found with status {} and actiontype {}",
                         instanceInfo.getId(), instanceInfo.getStatus().name(), instanceInfo.getActionType().name());
                 Application app = applicationInstancesMap.get(instanceInfo
@@ -962,11 +962,11 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
         write.lock();
         try {
             Iterator<RecentlyChangedItem> iter = this.recentlyChangedQueue.iterator();
-            logger.debug("The number of elements in the delta queue is :{}", this.recentlyChangedQueue.size());
+            logger.info("Foobar The number of elements in the delta queue is :{}", this.recentlyChangedQueue.size());
             while (iter.hasNext()) {
                 Lease<InstanceInfo> lease = iter.next().getLeaseInfo();
                 InstanceInfo instanceInfo = lease.getHolder();
-                logger.debug("The instance id {} is found with status {} and actiontype {}",
+                logger.info("Foobar The instance id {} is found with status {} and actiontype {}",
                         instanceInfo.getId(), instanceInfo.getStatus().name(), instanceInfo.getActionType().name());
                 Application app = applicationInstancesMap.get(instanceInfo.getAppName());
                 if (app == null) {
@@ -1249,7 +1249,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
         public void run() {
             try {
                 long compensationTimeMs = getCompensationTimeMs();
-                logger.info("Running the evict task with compensationTime {}ms", compensationTimeMs);
+                logger.info("Foobar Running the evict task with compensationTime {}ms", compensationTimeMs);
                 evict(compensationTimeMs);
             } catch (Throwable e) {
                 logger.error("Could not run the evict task", e);
@@ -1338,7 +1338,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                                                                     Lease<InstanceInfo> existingLease,
                                                                     boolean isReplication) {
         InstanceStatusOverrideRule rule = getInstanceInfoOverrideRule();
-        logger.debug("Processing override status using rule: {}", rule);
+        logger.info("Foobar Processing override status using rule: {}", rule);
         return rule.apply(r, existingLease, isReplication).status();
     }
 

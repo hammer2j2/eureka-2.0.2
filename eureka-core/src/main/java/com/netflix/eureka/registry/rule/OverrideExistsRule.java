@@ -27,7 +27,7 @@ public class OverrideExistsRule implements InstanceStatusOverrideRule {
         InstanceInfo.InstanceStatus overridden = statusOverrides.get(instanceInfo.getId());
         // If there are instance specific overrides, then they win - otherwise the ASG status
         if (overridden != null) {
-            logger.debug("The instance specific override for instance {} and the value is {}",
+            logger.info("Foobar The instance specific override for instance {} and the value is {}",
                     instanceInfo.getId(), overridden.name());
             return StatusOverrideResult.matchingStatus(overridden);
         }

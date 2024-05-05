@@ -138,7 +138,7 @@ public class RemoteRegionRegistry implements LookupService<String> {
         try {
             ip = InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
-            logger.warn("Cannot find localhost ip", e);
+            logger.info("Foobar Cannot find localhost ip", e);
         }
         EurekaServerIdentity identity = new EurekaServerIdentity(ip);
         discoveryApacheClient.addFilter(new EurekaIdentityHeaderFilter(identity));
@@ -151,7 +151,7 @@ public class RemoteRegionRegistry implements LookupService<String> {
             newEurekaHttpClient = eurekaServerHttpClientFactory.createRemoteRegionClient(
                     serverConfig, clientConfig.getTransportConfig(), serverCodecs, clusterResolver);
         } catch (Exception e) {
-            // logger.warn("Transport initialization failure", e);
+            // logger.info("Foobar Transport initialization failure", e);
             // FIXME: 2.0 go back to warn above when apache client reinstated
             throw new RuntimeException("Transport initialization failure", e);
         }
@@ -161,7 +161,7 @@ public class RemoteRegionRegistry implements LookupService<String> {
             if (fetchRegistry()) {
                 this.readyForServingData = true;
             } else {
-                logger.warn("Failed to fetch remote registry. This means this eureka server is not ready for serving "
+                logger.info("Foobar Failed to fetch remote registry. This means this eureka server is not ready for serving "
                         + "traffic.");
             }
         } catch (Throwable e) {
@@ -176,7 +176,7 @@ public class RemoteRegionRegistry implements LookupService<String> {
                     if (fetchRegistry()) {
                         readyForServingData = true;
                     } else {
-                        logger.warn("Failed to fetch remote registry. This means this eureka server is not "
+                        logger.info("Foobar Failed to fetch remote registry. This means this eureka server is not "
                                 + "ready for serving traffic.");
                     }
                 } catch (Throwable e) {
@@ -210,7 +210,7 @@ public class RemoteRegionRegistry implements LookupService<String> {
         try {
             Monitors.registerObject(this);
         } catch (Throwable e) {
-            logger.warn("Cannot register the JMX monitor for the RemoteRegionRegistry :", e);
+            logger.info("Foobar Cannot register the JMX monitor for the RemoteRegionRegistry :", e);
         }
     }
 
@@ -235,9 +235,9 @@ public class RemoteRegionRegistry implements LookupService<String> {
             if (serverConfig.shouldDisableDeltaForRemoteRegions()
                     || (getApplications() == null)
                     || (getApplications().getRegisteredApplications().size() == 0)) {
-                logger.info("Disable delta property : {}", serverConfig.shouldDisableDeltaForRemoteRegions());
-                logger.info("Application is null : {}", getApplications() == null);
-                logger.info("Registered Applications size is zero : {}", getApplications().getRegisteredApplications().isEmpty());
+                logger.info("Foobar Disable delta property : {}", serverConfig.shouldDisableDeltaForRemoteRegions());
+                logger.info("Foobar Application is null : {}", getApplications() == null);
+                logger.info("Foobar Registered Applications size is zero : {}", getApplications().getRegisteredApplications().isEmpty());
                 success = storeFullRegistry();
             } else {
                 success = fetchAndStoreDelta();
@@ -269,11 +269,11 @@ public class RemoteRegionRegistry implements LookupService<String> {
             this.applicationsDelta.set(delta);
         } else {
             delta = null;  // set the delta to null so we don't use it
-            logger.warn("Not updating delta as another thread is updating it already");
+            logger.info("Foobar Not updating delta as another thread is updating it already");
         }
 
         if (delta == null) {
-            logger.warn("The server does not allow the delta revision to be applied because it is not "
+            logger.info("Foobar The server does not allow the delta revision to be applied because it is not "
                     + "safe. Hence got the full registry.");
             return storeFullRegistry();
         } else {
@@ -286,7 +286,7 @@ public class RemoteRegionRegistry implements LookupService<String> {
                     fetchRegistryUpdateLock.unlock();
                 }
             } else {
-                logger.warn("Cannot acquire update lock, aborting updateDelta operation of fetchAndStoreDelta");
+                logger.info("Foobar Cannot acquire update lock, aborting updateDelta operation of fetchAndStoreDelta");
             }
 
             // There is a diff in number of instances for some reason
@@ -320,7 +320,7 @@ public class RemoteRegionRegistry implements LookupService<String> {
                     if (existingApp == null) {
                         getApplications().addApplication(app);
                     }
-                    logger.debug("Added instance {} to the existing apps ",
+                    logger.info("Foobar Added instance {} to the existing apps ",
                             instance.getId());
                     getApplications().getRegisteredApplications(
                             instance.getAppName()).addInstance(instance);
@@ -330,7 +330,7 @@ public class RemoteRegionRegistry implements LookupService<String> {
                     if (existingApp == null) {
                         getApplications().addApplication(app);
                     }
-                    logger.debug("Modified instance {} to the existing apps ",
+                    logger.info("Foobar Modified instance {} to the existing apps ",
                             instance.getId());
 
                     getApplications().getRegisteredApplications(
@@ -342,14 +342,14 @@ public class RemoteRegionRegistry implements LookupService<String> {
                     if (existingApp == null) {
                         getApplications().addApplication(app);
                     }
-                    logger.debug("Deleted instance {} to the existing apps ",
+                    logger.info("Foobar Deleted instance {} to the existing apps ",
                             instance.getId());
                     getApplications().getRegisteredApplications(
                             instance.getAppName()).removeInstance(instance);
                 }
             }
         }
-        logger.debug(
+        logger.info(
                 "The total number of instances fetched by the delta processor : {}",
                 deltaCount);
 
@@ -385,10 +385,10 @@ public class RemoteRegionRegistry implements LookupService<String> {
         } else if (fetchRegistryGeneration.compareAndSet(currentGeneration, currentGeneration + 1)) {
             applications.set(apps);
             applicationsDelta.set(apps);
-            logger.info("Successfully updated registry with the latest content");
+            logger.info("Foobar Successfully updated registry with the latest content");
             return true;
         } else {
-            logger.warn("Not updating applications as another thread is updating it already");
+            logger.info("Foobar Not updating applications as another thread is updating it already");
         }
         return false;
     }
@@ -399,17 +399,17 @@ public class RemoteRegionRegistry implements LookupService<String> {
      * @return - response which has information about the data.
      */
     protected Applications fetchRemoteRegistry(boolean delta) {
-        logger.info("Getting instance registry info from the eureka server : {} , delta : {}", this.remoteRegionURL, delta);
+        logger.info("Foobar Getting instance registry info from the eureka server : {} , delta : {}", this.remoteRegionURL, delta);
 
 //        if (shouldUseExperimentalTransport()) {
             try {
                 EurekaHttpResponse<Applications> httpResponse = delta ? eurekaHttpClient.getDelta() : eurekaHttpClient.getApplications();
                 int httpStatus = httpResponse.getStatusCode();
                 if (httpStatus >= 200 && httpStatus < 300) {
-                    logger.debug("Got the data successfully : {}", httpStatus);
+                    logger.info("Foobar Got the data successfully : {}", httpStatus);
                     return httpResponse.getEntity();
                 }
-                logger.warn("Cannot get the data from {} : {}", this.remoteRegionURL, httpStatus);
+                logger.info("Foobar Cannot get the data from {} : {}", this.remoteRegionURL, httpStatus);
             } catch (Throwable t) {
                 logger.error("Can't get a response from {}", this.remoteRegionURL, t);
             }
@@ -423,10 +423,10 @@ public class RemoteRegionRegistry implements LookupService<String> {
                         .get(ClientResponse.class);
                 int httpStatus = response.getStatus();
                 if (httpStatus >= 200 && httpStatus < 300) {
-                    logger.debug("Got the data successfully : {}", httpStatus);
+                    logger.info("Foobar Got the data successfully : {}", httpStatus);
                     return response.getEntity(Applications.class);
                 }
-                logger.warn("Cannot get the data from {} : {}", this.remoteRegionURL, httpStatus);
+                logger.info("Foobar Cannot get the data from {} : {}", this.remoteRegionURL, httpStatus);
             } catch (Throwable t) {
                 logger.error("Can't get a response from {}", this.remoteRegionURL, t);
             } finally {
@@ -445,7 +445,7 @@ public class RemoteRegionRegistry implements LookupService<String> {
          * @throws Throwable
          */
     private boolean reconcileAndLogDifference(Applications delta, String reconcileHashCode) throws Throwable {
-        logger.warn("The Reconcile hashcodes do not match, client : {}, server : {}. Getting the full registry",
+        logger.info("Foobar The Reconcile hashcodes do not match, client : {}, server : {}. Getting the full registry",
                 reconcileHashCode, delta.getAppsHashCode());
 
         long currentGeneration = fetchRegistryGeneration.get();
@@ -459,12 +459,12 @@ public class RemoteRegionRegistry implements LookupService<String> {
         if (fetchRegistryGeneration.compareAndSet(currentGeneration, currentGeneration + 1)) {
             applications.set(apps);
             applicationsDelta.set(apps);
-            logger.warn("The Reconcile hashcodes after complete sync up, client : {}, server : {}.",
+            logger.info("Foobar The Reconcile hashcodes after complete sync up, client : {}, server : {}.",
                     getApplications().getReconcileHashCode(),
                     delta.getAppsHashCode());
             return true;
         }else {
-            logger.warn("Not setting the applications map as another thread has advanced the update generation");
+            logger.info("Foobar Not setting the applications map as another thread has advanced the update generation");
             return true;  // still return true
         }
     }
@@ -477,7 +477,7 @@ public class RemoteRegionRegistry implements LookupService<String> {
         for (Application application : getApplications().getRegisteredApplications()) {
             totInstances += application.getInstancesAsIsFromEureka().size();
         }
-        logger.debug("The total number of all instances in the client now is {}", totInstances);
+        logger.info("Foobar The total number of all instances in the client now is {}", totInstances);
     }
 
     @Override

@@ -162,7 +162,7 @@ public class ResponseCacheImpl implements ResponseCache {
         try {
             Monitors.registerObject(this);
         } catch (Throwable e) {
-            logger.warn("Cannot register the JMX monitor for the InstanceRegistry", e);
+            logger.info("Foobar Cannot register the JMX monitor for the InstanceRegistry", e);
         }
     }
 
@@ -170,10 +170,10 @@ public class ResponseCacheImpl implements ResponseCache {
         return new TimerTask() {
             @Override
             public void run() {
-                logger.debug("Updating the client cache from response cache");
+                logger.info("Foobar Updating the client cache from response cache");
                 for (Key key : readOnlyCacheMap.keySet()) {
                     if (logger.isDebugEnabled()) {
-                        logger.debug("Updating the client cache from response cache for key : {} {} {} {}",
+                        logger.info("Foobar Updating the client cache from response cache for key : {} {} {} {}",
                                 key.getEntityType(), key.getName(), key.getVersion(), key.getType());
                     }
                     try {
@@ -276,14 +276,14 @@ public class ResponseCacheImpl implements ResponseCache {
      */
     public void invalidate(Key... keys) {
         for (Key key : keys) {
-            logger.debug("Invalidating the response cache key : {} {} {} {}, {}",
+            logger.info("Foobar Invalidating the response cache key : {} {} {} {}, {}",
                     key.getEntityType(), key.getName(), key.getVersion(), key.getType(), key.getEurekaAccept());
 
             readWriteCacheMap.invalidate(key);
             Collection<Key> keysWithRegions = regionSpecificKeys.get(key);
             if (null != keysWithRegions && !keysWithRegions.isEmpty()) {
                 for (Key keysWithRegion : keysWithRegions) {
-                    logger.debug("Invalidating the response cache key : {} {} {} {} {}",
+                    logger.info("Foobar Invalidating the response cache key : {} {} {} {} {}",
                             key.getEntityType(), key.getName(), key.getVersion(), key.getType(), key.getEurekaAccept());
                     readWriteCacheMap.invalidate(keysWithRegion);
                 }
@@ -382,7 +382,7 @@ public class ResponseCacheImpl implements ResponseCache {
             return "";
         }
         if(logger.isDebugEnabled()) {
-            logger.debug("New application cache entry {} with apps hashcode {}", key.toStringCompact(), apps.getAppsHashCode());
+            logger.info("Foobar New application cache entry {} with apps hashcode {}", key.toStringCompact(), apps.getAppsHashCode());
         }
         return result;
     }
@@ -460,7 +460,7 @@ public class ResponseCacheImpl implements ResponseCache {
     }
 
     private static Applications getApplicationsForVip(Key key, AbstractInstanceRegistry registry) {
-        logger.debug(
+        logger.info(
                 "Retrieving applications from registry for key : {} {} {} {}",
                 key.getEntityType(), key.getName(), key.getVersion(), key.getType());
         Applications toReturn = new Applications();
@@ -492,7 +492,7 @@ public class ResponseCacheImpl implements ResponseCache {
             }
         }
         toReturn.setAppsHashCode(toReturn.getReconcileHashCode());
-        logger.debug(
+        logger.info(
                 "Retrieved applications from registry for key : {} {} {} {}, reconcile hashcode: {}",
                 key.getEntityType(), key.getName(), key.getVersion(), key.getType(),
                 toReturn.getReconcileHashCode());

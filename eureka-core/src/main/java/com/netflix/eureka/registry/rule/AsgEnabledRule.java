@@ -28,7 +28,7 @@ public class AsgEnabledRule implements InstanceStatusOverrideRule {
         // If the ASGName is present- check for its status
         if (instanceInfo.getASGName() != null) {
             boolean isASGDisabled = !asgClient.isASGEnabled(instanceInfo);
-            logger.debug("The ASG name is specified {} and the value is {}", instanceInfo.getASGName(), isASGDisabled);
+            logger.info("Foobar The ASG name is specified {} and the value is {}", instanceInfo.getASGName(), isASGDisabled);
             if (isASGDisabled) {
                 return StatusOverrideResult.matchingStatus(InstanceStatus.OUT_OF_SERVICE);
             } else {
