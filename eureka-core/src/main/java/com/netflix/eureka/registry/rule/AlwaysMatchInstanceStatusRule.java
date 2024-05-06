@@ -17,7 +17,7 @@ public class AlwaysMatchInstanceStatusRule implements InstanceStatusOverrideRule
     public StatusOverrideResult apply(InstanceInfo instanceInfo,
                                       Lease<InstanceInfo> existingLease,
                                       boolean isReplication) {
-        logger.info("Foobar Returning the default instance status {} for instance {}", instanceInfo.getStatus(),
+        logger.info("Clayton Returning the default instance status {} for instance {}", instanceInfo.getStatus(),
                 instanceInfo.getId());
         return StatusOverrideResult.matchingStatus(instanceInfo.getStatus());
     }

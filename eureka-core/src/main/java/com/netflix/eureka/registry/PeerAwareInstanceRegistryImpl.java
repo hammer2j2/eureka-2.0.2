@@ -160,7 +160,7 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
         try {
             Monitors.registerObject(this);
         } catch (Throwable e) {
-            logger.info("Foobar Cannot register the JMX monitor for the InstanceRegistry :", e);
+            logger.info("Clayton Cannot register the JMX monitor for the InstanceRegistry :", e);
         }
     }
 
@@ -217,7 +217,7 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
                 try {
                     Thread.sleep(serverConfig.getRegistrySyncRetryWaitMs());
                 } catch (InterruptedException e) {
-                    logger.info("Foobar Interrupted during registry transfer..");
+                    logger.info("Clayton Interrupted during registry transfer..");
                     break;
                 }
             }
@@ -243,8 +243,8 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
         // Renewals happen every 30 seconds and for a minute it should be a factor of 2.
         this.expectedNumberOfClientsSendingRenews = count;
         updateRenewsPerMinThreshold();
-        logger.info("Foobar Got {} instances from neighboring DS node", count);
-        logger.info("Foobar Renew threshold is: {}", numberOfRenewsPerMinThreshold);
+        logger.info("Clayton Got {} instances from neighboring DS node", count);
+        logger.info("Clayton Renew threshold is: {}", numberOfRenewsPerMinThreshold);
         this.startupTime = System.currentTimeMillis();
         if (count > 0) {
             this.peerInstancesTransferEmptyOnStartup = false;
@@ -252,10 +252,10 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
         DataCenterInfo.Name selfName = applicationInfoManager.getInfo().getDataCenterInfo().getName();
         boolean isAws = Name.Amazon == selfName;
         if (isAws && serverConfig.shouldPrimeAwsReplicaConnections()) {
-            logger.info("Foobar Priming AWS connections for all replicas..");
+            logger.info("Clayton Priming AWS connections for all replicas..");
             primeAwsReplicas(applicationInfoManager);
         }
-        logger.info("Foobar Changing status to UP");
+        logger.info("Clayton Changing status to UP");
         applicationInfoManager.setInstanceStatus(InstanceStatus.UP);
         super.postInit();
     }
@@ -285,7 +285,7 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
                 Application eurekaApps = this.getApplication(applicationInfoManager.getInfo().getAppName(), false);
                 if (eurekaApps == null) {
                     areAllPeerNodesPrimed = true;
-                    logger.info("Foobar No peers needed to prime.");
+                    logger.info("Clayton No peers needed to prime.");
                     return;
                 }
                 for (PeerEurekaNode node : peerEurekaNodes.getPeerEurekaNodes()) {
@@ -299,7 +299,7 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
                             continue;
                         }
                         peerHostName = peerInstanceInfo.getHostName();
-                        logger.info("Foobar Trying to send heartbeat for the eureka server at {} to make sure the " +
+                        logger.info("Clayton Trying to send heartbeat for the eureka server at {} to make sure the " +
                                 "network channels are open", peerHostName);
                         // Only try to contact the eureka nodes that are in this instance's registry - because
                         // the other instances may be legitimately down
@@ -319,7 +319,7 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
                 try {
                     Thread.sleep(PRIME_PEER_NODES_RETRY_MS);
                 } catch (InterruptedException e1) {
-                    logger.info("Foobar Interrupted while priming : ", e1);
+                    logger.info("Clayton Interrupted while priming : ", e1);
                     areAllPeerNodesPrimed = true;
                 }
             }
@@ -551,7 +551,7 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
                     updateRenewsPerMinThreshold();
                 }
             }
-            logger.info("Foobar Current renewal threshold is : {}", numberOfRenewsPerMinThreshold);
+            logger.info("Clayton Current renewal threshold is : {}", numberOfRenewsPerMinThreshold);
         } catch (Throwable e) {
             logger.error("Cannot update renewal threshold", e);
         }

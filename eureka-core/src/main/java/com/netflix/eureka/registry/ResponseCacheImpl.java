@@ -162,7 +162,7 @@ public class ResponseCacheImpl implements ResponseCache {
         try {
             Monitors.registerObject(this);
         } catch (Throwable e) {
-            logger.info("Foobar Cannot register the JMX monitor for the InstanceRegistry", e);
+            logger.info("Clayton Cannot register the JMX monitor for the InstanceRegistry", e);
         }
     }
 
@@ -170,10 +170,10 @@ public class ResponseCacheImpl implements ResponseCache {
         return new TimerTask() {
             @Override
             public void run() {
-                logger.info("Foobar Updating the client cache from response cache");
+                logger.info("Clayton Updating the client cache from response cache");
                 for (Key key : readOnlyCacheMap.keySet()) {
                     if (logger.isDebugEnabled()) {
-                        logger.info("Foobar Updating the client cache from response cache for key : {} {} {} {}",
+                        logger.info("Clayton Updating the client cache from response cache for key : {} {} {} {}",
                                 key.getEntityType(), key.getName(), key.getVersion(), key.getType());
                     }
                     try {
@@ -276,14 +276,14 @@ public class ResponseCacheImpl implements ResponseCache {
      */
     public void invalidate(Key... keys) {
         for (Key key : keys) {
-            logger.info("Foobar Invalidating the response cache key : {} {} {} {}, {}",
+            logger.info("Clayton Invalidating the response cache key : {} {} {} {}, {}",
                     key.getEntityType(), key.getName(), key.getVersion(), key.getType(), key.getEurekaAccept());
 
             readWriteCacheMap.invalidate(key);
             Collection<Key> keysWithRegions = regionSpecificKeys.get(key);
             if (null != keysWithRegions && !keysWithRegions.isEmpty()) {
                 for (Key keysWithRegion : keysWithRegions) {
-                    logger.info("Foobar Invalidating the response cache key : {} {} {} {} {}",
+                    logger.info("Clayton Invalidating the response cache key : {} {} {} {} {}",
                             key.getEntityType(), key.getName(), key.getVersion(), key.getType(), key.getEurekaAccept());
                     readWriteCacheMap.invalidate(keysWithRegion);
                 }
@@ -382,7 +382,7 @@ public class ResponseCacheImpl implements ResponseCache {
             return "";
         }
         if(logger.isDebugEnabled()) {
-            logger.info("Foobar New application cache entry {} with apps hashcode {}", key.toStringCompact(), apps.getAppsHashCode());
+            logger.info("Clayton New application cache entry {} with apps hashcode {}", key.toStringCompact(), apps.getAppsHashCode());
         }
         return result;
     }
